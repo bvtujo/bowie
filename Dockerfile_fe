@@ -1,0 +1,7 @@
+FROM golang:1.13
+COPY . /workdir
+WORKDIR /workdir
+ENTRYPOINT ["go", "run"]
+CMD ["cmd/frontend"]
+
+EXPOSE 80
