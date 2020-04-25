@@ -13,7 +13,8 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	"github.com/bvtujo/bowie/m/v2/pkg/database"
-	"github.com/bvtujo/bowie/pkg/s3"
+	"github.com/bvtujo/bowie/m/v2/pkg/s3"
+	"github.com/bvtujo/bowie/m/v2/pkg/web"
 )
 
 const (
@@ -30,7 +31,35 @@ var dynamoTable = os.Getenv("DOG_DATA_DYNAMO")
 
 // Index returns the homepage, or all dog gifs.
 func Index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	fmt.Fprint(w, "Welcome!\n")
+	t, err := web.LoadTemplate("cmd/frontend/index.html")
+	if checkHTTPErrorf(w, http.StatusInternalServerError, "cannot read template: %w", err) {
+		return
+	}
+	p := web.PageData{
+		Stylesheet: "",
+	}
+	d := web.IndexData{
+		PageData: p,
+		Items:    nil,
+	}
+	err = t.Execute(w, d)
+	if checkHTTPErrorf(w, http.StatusInternalServerError, "execute index: %w", err) {
+		return
+	}
+	return
+}
+
+func checkHTTPErrorf(w http.ResponseWriter, code int, message string, e error) bool {
+	if !strings.Contains(message, `%w`) {
+		panic("bad error message")
+	}
+	if e != nil {
+		err := fmt.Sprintf(message, e)
+		log.Error(err)
+		http.Error(w, err, code)
+		return true
+	}
+	return false
 }
 
 // Add adds a new gif to the specified dog's feed.
@@ -41,6 +70,21 @@ func AddPage(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		return
 	}
 
+	p := web.PageData{
+		Stylesheet: "",
+	}
+	d := web.AddData{
+		PageData: p,
+		DogName:  name,
+	}
+	t, err := web.LoadTemplate("cmd/frontend/add.go.html")
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	t.Execute(w, d)
+
+	return
 }
 
 func AddNewDogPic(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
@@ -76,7 +120,7 @@ func AddNewDogPic(w http.ResponseWriter, r *http.Request, ps httprouter.Params) 
 		Key:       aws.String(s3Key),
 		Timestamp: getTimestamp(),
 		Tags:      parseTags(r.FormValue("tags")),
-		URL:       url,
+		URL:       aws.String(url),
 	}
 	dogsvc := database.NewDogService(sess, dynamoTable)
 	_, err = dogsvc.Add(dogpic)
@@ -85,7 +129,12 @@ func AddNewDogPic(w http.ResponseWriter, r *http.Request, ps httprouter.Params) 
 		http.Error(w, "can't add file to ddb", http.StatusInternalServerError)
 		return
 	}
-	w.Write()
+	rdURL := fmt.Sprintf("/dogs/%s", ps.ByName("dogName"))
+	http.Redirect(w, r, rdURL, http.StatusSeeOther)
+}
+
+func ShowDog(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	fmt.Fprintf(w, "showing %s", ps.ByName("dogName"))
 }
 
 func getTimestamp() int64 {
@@ -103,12 +152,20 @@ func parseTags(t string) []*string {
 	return out
 }
 
+func Healthcheck(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	w.WriteHeader(http.StatusOK)
+}
+
 func main() {
 	r := httprouter.New()
 
 	r.GET("/", Index)
-	r.GET("add/:dogName", AddPage)
-	r.POST("add/:dogName", AddNewDogPic)
-	log.Fatal(http.ListenAndServe(":80", r))
+	r.GET("/add/:dogName", AddPage)
+	r.POST("/add/:dogName", AddNewDogPic)
+	r.GET("/dogs/:dogName", ShowDog)
+
+	r.GET("/healthcheck", Healthcheck)
+
+	log.Fatal(http.ListenAndServe(":8080", r))
 
 }

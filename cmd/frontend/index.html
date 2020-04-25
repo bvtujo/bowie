@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href={{.Stylesheet}}>
+        <title>🐶DDOS: Daily Dose of Sweet (dog pics)</title>
+    </head>
+    <body>
+        <h1>🐕❤️</h1>
+        <div id="dogs">
+            {{range .Items}}
+            <div>
+                <img class="dog-picture" src={{.URL}}>
+                <p class="dog-text">{{.DogName}}</p>
+                <div class="memedown"></div>
+            </div>
+            {{else}}
+            <div>
+                <strong>no rows</strong>
+            </div>
+            {{end}}
+        </div>
+	</body>
+</html>
