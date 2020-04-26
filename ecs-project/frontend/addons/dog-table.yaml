@@ -3,16 +3,16 @@ dog-table:
   Properties: 
     TableName: !Sub ${Project}-${Env}-${App}-dog-table
     AttributeDefinitions: 
-      - AttributeName: dog-name
-        AttributeType: S
-      - AttributeName: timestamp
-        AttributeType: N
-      - AttributeName: key
-        AttributeType: S
-      - AttributeName: tags
-        AttributeType: SS
-      - AttributeName: url
-        AttributeType: S
+      - AttributeName: "dog-name"
+        AttributeType: "S"
+      - AttributeName: "timestamp"
+        AttributeType: "N"
+      - AttributeName: "key"
+        AttributeType: "S"
+      - AttributeName: "tags"
+        AttributeType: "S"
+      - AttributeName: "url"
+        AttributeType: "S"
     KeySchema: 
       - AttributeName: dog-name
         KeyType: HASH
