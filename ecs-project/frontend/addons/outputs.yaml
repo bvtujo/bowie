@@ -1,0 +1,6 @@
+AdditionalResourcesPolicyArn:
+  Description: ARN of the policy to access additional resources from.
+  Value: !Ref AdditionalResourcesPolicy
+MyTableName:
+  Description: The name of the DynamoDB table for this application.
+  Value: !Ref MyTable

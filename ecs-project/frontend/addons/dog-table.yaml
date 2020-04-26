@@ -1,0 +1,21 @@
+dog-table:
+  Type: AWS::DynamoDB::Table
+  Properties: 
+    TableName: !Sub ${Project}-${Env}-${App}-dog-table
+    AttributeDefinitions: 
+      - AttributeName: dog-name
+        AttributeType: S
+      - AttributeName: timestamp
+        AttributeType: N
+      - AttributeName: key
+        AttributeType: S
+      - AttributeName: tags
+        AttributeType: SS
+      - AttributeName: url
+        AttributeType: S
+    KeySchema: 
+      - AttributeName: dog-name
+        KeyType: HASH
+      - AttributeName: timestamp
+        KeyType: RANGE
+    BillingMode: PAY_PER_REQUEST
