@@ -3,7 +3,7 @@ AdditionalResourcesPolicyArn:
   Value: !Ref AdditionalResourcesPolicy
 MyTableName:
   Description: The name of the DynamoDB table for this application.
-  Value: !Ref dog-table
+  Value: !Ref dogTable
 MyBucketName:
   Description: The name of the dog picture s3 bucket
-  Value: !Ref dog-pic-bucket
+  Value: !Ref dogPicBucket
