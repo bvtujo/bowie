@@ -1,4 +1,4 @@
-dog-table:
+dogTable:
   Type: AWS::DynamoDB::Table
   Properties: 
     TableName: !Sub ${Project}-${Env}-${App}-dog-table
