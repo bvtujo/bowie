@@ -19,7 +19,7 @@ AdditionalResourcesPolicy:
         - "dynamodb:PutItem"
         Resource: !Sub
         - "arn:aws:dynamodb:*:*:table/${Table}"
-        - { Table: !Ref dog-table }
+        - { Table: !Ref dogTable }
       Statement:
         - Sid: copilot-s3-object-actions
           Action:
@@ -32,7 +32,7 @@ AdditionalResourcesPolicy:
           Effect: Allow
           Resource: !Sub
           - "arn:aws:s3:::${Bucket}/*"
-          - { Bucket: !Ref dog-pic-bucket }
+          - { Bucket: !Ref dogPicBucket }
       Statement:
         - Sid: copilot-s3-bucket-actions
           Action:
@@ -40,4 +40,4 @@ AdditionalResourcesPolicy:
           Effect: Allow
           Resource: !Sub
           - "arn:aws:s3:::${Bucket}"
-          - { Bucket: !Ref dog-pic-bucket }
+          - { Bucket: !Ref dogPicBucket }
