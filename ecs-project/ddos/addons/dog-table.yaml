@@ -13,3 +13,10 @@ DogTable:
       - AttributeName: "timestamp"
         KeyType: "RANGE"
     BillingMode: "PAY_PER_REQUEST"
+    Tags:
+      - Key: ecs-project
+        Value: !Ref Project
+      - Key: ecs-environment
+        Value: !Ref Env
+      - Key: ecs-application
+        Value: !Ref App

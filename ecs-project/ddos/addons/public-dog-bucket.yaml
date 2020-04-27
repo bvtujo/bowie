@@ -1,0 +1,17 @@
+PUBLICDogBucket:
+  Type: AWS::S3::Bucket
+  Properties:
+    AccessControl: PublicRead
+    BucketName: PUBLIC-dog-pic-bucket
+    DeletionPolicy: Retain
+    PublicAccessBlockConfiguration:
+      BlockPublicAcls: false
+      BlockPublicPolicy: false
+    Tags:
+      - Key: ecs-project
+        Value: !Ref Project
+      - Key: ecs-environment
+        Value: !Ref Env
+      - Key: ecs-application
+        Value: !Ref App
+

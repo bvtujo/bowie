@@ -3,4 +3,7 @@ AdditionalResourcesPolicyArn:
   Value: !Ref AdditionalResourcesPolicy
 MyTableName:
   Description: "The name of the DynamoDB table for this application."
-  Value: !GetAtt DogTable.Arn
+  Value: !Ref DogTable
+BucketName:
+  Description: "The name of the S3 bucket to hold dog pictures"
+  Value: !Ref PUBLICDogBucket

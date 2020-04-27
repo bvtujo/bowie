@@ -26,8 +26,8 @@ const (
 	errBadFile        = "bad file o_O"
 )
 
-var s3Bucket = os.Getenv("DOG_DATA_BUCKET")
-var dynamoTable = os.Getenv("DOG_DATA_DYNAMO")
+var s3Bucket = os.Getenv("PUBLIC_DOG_BUCKET")
+var dynamoTable = os.Getenv("DOG_TABLE")
 
 // Index returns the homepage, or all dog gifs.
 func Index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
@@ -94,12 +94,15 @@ func AddNewDogPic(w http.ResponseWriter, r *http.Request, ps httprouter.Params) 
 		http.Error(w, errBadFile, http.StatusBadRequest)
 		return
 	}
-	file, _, err := r.FormFile(formFileKey)
+	file, handler, err := r.FormFile(formFileKey)
 	if err != nil {
 		log.Warn("error getting file: %w", err)
 		return
 	}
 	defer file.Close()
+	log.Infof("Uploaded File: %+v\n", handler.Filename)
+	log.Infof("File Size: %+v\n", handler.Size)
+	log.Infof("MIME Header: %+v\n", handler.Header)
 
 	sess, err := session.NewSession()
 	if err != nil {
