@@ -7,12 +7,6 @@ dogTable:
         AttributeType: "S"
       - AttributeName: "timestamp"
         AttributeType: "N"
-      - AttributeName: "key"
-        AttributeType: "S"
-      - AttributeName: "tags"
-        AttributeType: "S"
-      - AttributeName: "url"
-        AttributeType: "S"
     KeySchema: 
       - AttributeName: "dog-name"
         KeyType: "HASH"
