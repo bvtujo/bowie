@@ -17,9 +17,7 @@ AdditionalResourcesPolicy:
           - "dynamodb:Delete*"
           - "dynamodb:Update*"
           - "dynamodb:PutItem"
-          Resource: !Sub
-          - "arn:aws:dynamodb:*:*:table/${Table}"
-          - { Table: !Ref dogTable }
+          Resource: !GetAtt dogTable.Arn
       - Statement:
           Sid: copilotS3ObjectActions
           Action:
@@ -31,13 +29,11 @@ AdditionalResourcesPolicy:
             - s3:RestoreObject
           Effect: Allow
           Resource: !Sub
-          - "arn:aws:s3:::${Bucket}/*"
-          - { Bucket: !Ref dogPicBucket }
+          - "${Bucket}/*"
+          - { Bucket: !GetAtt dogPicBucket.Arn }
       - Statement:
           Sid: copilottS3BucketActions
           Action:
             - s3:ListBucket
           Effect: Allow
-          Resource: !Sub
-          - "arn:aws:s3:::${Bucket}"
-          - { Bucket: !Ref dogPicBucket }
+          Resource: !GetAtt dogPicBucket.Arn
