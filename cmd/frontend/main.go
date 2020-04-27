@@ -35,18 +35,42 @@ func Index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	if checkHTTPErrorf(w, http.StatusInternalServerError, "cannot read template: %w", err) {
 		return
 	}
+	sess, err := session.NewSession()
+	if checkHTTPErrorf(w, http.StatusInternalServerError, "cannot get dynamo connection: %w", err) {
+		return
+	}
+	ddb := database.NewDogService(sess, dynamoTable)
+	allPics, err := ddb.GetAll()
+	if checkHTTPErrorf(w, http.StatusInternalServerError, "cannot scan ddb: %w", err) {
+		return
+	}
+
 	p := web.PageData{
 		Stylesheet: "",
 	}
 	d := web.IndexData{
 		PageData: p,
-		Items:    nil,
+		Items:    convertAll(allPics),
 	}
 	err = t.Execute(w, d)
 	if checkHTTPErrorf(w, http.StatusInternalServerError, "execute index: %w", err) {
 		return
 	}
 	return
+}
+
+func convertAll(in []database.DogPic) []web.DogPic {
+	var o []web.DogPic
+	for _, p := range in {
+		o = append(o, convert(p))
+	}
+	return o
+}
+func convert(in database.DogPic) web.DogPic {
+	return web.DogPic{
+		Dog: *in.Dog,
+		URL: *in.URL,
+	}
 }
 
 func checkHTTPErrorf(w http.ResponseWriter, code int, message string, e error) bool {

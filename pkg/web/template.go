@@ -24,11 +24,12 @@ type IndexData struct {
 }
 
 type DogPic struct {
-	URL     string
-	DogName string
+	URL string
+	Dog string
 }
 
 func executeIndex(w http.ResponseWriter, t *template.Template, d IndexData) error {
+
 	err := t.Execute(w, d)
 	if err != nil {
 		return fmt.Errorf("execute index template: %w", err)
