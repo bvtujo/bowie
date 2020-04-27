@@ -22,22 +22,6 @@ type DogPic struct {
 	URL       *string
 }
 
-func (d DogPic) GetDog() string {
-	return *d.Dog
-}
-func (d DogPic) GetKey() string {
-	return *d.Key
-}
-func (d DogPic) GetTimeStamp() int64 {
-	return d.Timestamp
-}
-func (d DogPic) GetTags() []*string {
-	return d.Tags
-}
-func (d DogPic) GetURL() string {
-	return d.URL
-}
-
 func NewDogService(sess *session.Session, tablename string) *DogService {
 	return &DogService{
 		dynamo: dynamodb.New(sess),
