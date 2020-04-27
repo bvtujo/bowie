@@ -26,8 +26,8 @@ const (
 	errBadFile        = "bad file o_O"
 )
 
-var s3Bucket = os.Getenv("PUBLIC_DOG_BUCKET")
-var dynamoTable = os.Getenv("DOG_TABLE")
+var s3Bucket = os.Getenv("BUCKET_NAME")
+var dynamoTable = os.Getenv("MY_TABLE_NAME")
 
 // Index returns the homepage, or all dog gifs.
 func Index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
