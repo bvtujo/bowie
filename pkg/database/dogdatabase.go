@@ -18,7 +18,6 @@ type DogPic struct {
 	Dog       *string
 	Key       *string
 	Timestamp int64
-	Tags      []*string
 	URL       *string
 }
 
@@ -43,7 +42,6 @@ func (ds *DogService) GetAll() ([]DogPic, error) {
 		currentPic := DogPic{
 			Dog:       r["dog-name"].S,
 			Key:       r["key"].S,
-			Tags:      r["tags"].SS,
 			Timestamp: timestamp,
 			URL:       r["url"].S,
 		}
@@ -66,9 +64,6 @@ func (ds *DogService) Add(dog DogPic) (*dynamodb.PutItemOutput, error) {
 				},
 				"key": &dynamodb.AttributeValue{
 					S: dog.Key,
-				},
-				"tags": &dynamodb.AttributeValue{
-					SS: dog.Tags,
 				},
 				"url": &dynamodb.AttributeValue{
 					S: dog.URL,

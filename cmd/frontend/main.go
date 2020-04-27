@@ -151,7 +151,6 @@ func AddNewDogPic(w http.ResponseWriter, r *http.Request, ps httprouter.Params) 
 		Dog:       aws.String(ps.ByName("dogName")),
 		Key:       aws.String(s3Key),
 		Timestamp: getTimestamp(),
-		Tags:      parseTags(r.FormValue("tags")),
 		URL:       aws.String(url),
 	}
 	dogsvc := database.NewDogService(sess, dynamoTable)
@@ -179,16 +178,6 @@ func ShowDog(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 func getTimestamp() int64 {
 	t := time.Now()
 	return t.Unix()
-}
-
-func parseTags(t string) []*string {
-	// TODO
-	tags := strings.Split(t, ",")
-	var out []*string
-	for _, t := range tags {
-		out = append(out, &t)
-	}
-	return out
 }
 
 func Healthcheck(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
