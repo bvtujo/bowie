@@ -1,0 +1,16 @@
+AssetsBucket:
+  Type: AWS::S3::Bucket
+  DeletionPolicy: Retain
+  Properties:
+    AccessControl: PublicRead
+    BucketName: !Sub ${Project}-${Env}-${App}-assets-bucket
+    PublicAccessBlockConfiguration:
+      BlockPublicAcls: false
+      BlockPublicPolicy: false
+    Tags:
+      - Key: ecs-project
+        Value: !Ref Project
+      - Key: ecs-environment
+        Value: !Ref Env
+      - Key: ecs-application
+        Value: !Ref App
