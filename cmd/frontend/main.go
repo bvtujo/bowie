@@ -26,7 +26,7 @@ const (
 	errBadFile        = "bad file o_O"
 )
 
-var s3Bucket = os.Getenv("BUCKET_NAME")
+var publicDogPicBucket = os.Getenv("BUCKET_NAME")
 var dynamoTable = os.Getenv("MY_TABLE_NAME")
 
 // Index returns the homepage, or all dog gifs.
@@ -109,7 +109,7 @@ func AddNewDogPic(w http.ResponseWriter, r *http.Request, ps httprouter.Params) 
 		log.Warn("error create session: %w", err)
 		http.Error(w, "can't create s3 client", http.StatusInternalServerError)
 	}
-	s3client := s3.NewS3Uploader(s3Bucket, sess)
+	s3client := s3.NewS3Uploader(publicDogPicBucket, sess)
 	s3Key := fmt.Sprintf("%s/%d.gif", ps.ByName("dogName"), time.Now().Unix())
 	res, err := s3client.Upload(file, s3Key)
 	if err != nil {
