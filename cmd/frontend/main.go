@@ -128,6 +128,11 @@ func AddNewDogPic(w http.ResponseWriter, r *http.Request, ps httprouter.Params) 
 	log.Infof("File Size: %+v\n", handler.Size)
 	log.Infof("MIME Header: %+v\n", handler.Header)
 
+	if !(strings.HasSuffix(handler.Filename, ".gif")) {
+		log.Infof("file %s is not gif", handler.Filename)
+		http.Redirect(w, r, fmt.Sprintf("/add/%s", ps.ByName("dogName")), http.StatusSeeOther)
+	}
+
 	sess, err := session.NewSession()
 	if err != nil {
 		log.Warn("error create session: %w", err)
