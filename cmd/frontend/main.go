@@ -128,8 +128,15 @@ func AddNewDogPic(w http.ResponseWriter, r *http.Request, ps httprouter.Params) 
 	dogsvc := database.NewDogService(sess, dynamoTable)
 	_, err = dogsvc.Add(dogpic)
 	if err != nil {
-		log.Warnf("error add pic to ddb: %w", err)
+		log.Warnf("error add pic to ddb: %s", err.Error())
 		http.Error(w, "can't add file to ddb", http.StatusInternalServerError)
+		deleteOut, err2 := s3client.Delete(s3Key)
+		if err2 != nil {
+			// TODO add reaper
+			log.Warnf("delete pic from s3: %s", err2.Error())
+			return
+		}
+		log.Infof("deleted object from s3: %v", deleteOut)
 		return
 	}
 	rdURL := fmt.Sprintf("/dogs/%s", ps.ByName("dogName"))
