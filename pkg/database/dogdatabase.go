@@ -29,12 +29,14 @@ func NewDogService(sess *session.Session, tablename string) *DogService {
 }
 
 func (ds *DogService) GetAll() ([]DogPic, error) {
-	items, err := ds.dynamo.Scan(&dynamodb.ScanInput{})
+	scanOut, err := ds.dynamo.Scan(&dynamodb.ScanInput{
+		TableName: ds.table,
+	})
 	if err != nil {
 		return nil, err
 	}
 	var output []DogPic
-	for _, r := range items.Items {
+	for _, r := range scanOut.Items {
 		timestamp, err := strconv.ParseInt(*r["timestamp"].N, 10, 64)
 		if err != nil {
 			return nil, err
