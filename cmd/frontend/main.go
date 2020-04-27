@@ -157,6 +157,7 @@ func parseTags(t string) []*string {
 
 func Healthcheck(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	w.WriteHeader(http.StatusOK)
+	return
 }
 
 func main() {
