@@ -1,9 +1,9 @@
 PUBLICDogBucket:
   Type: AWS::S3::Bucket
+  DeletionPolicy: Retain
   Properties:
     AccessControl: PublicRead
     BucketName: PUBLIC-dog-pic-bucket
-    DeletionPolicy: Retain
     PublicAccessBlockConfiguration:
       BlockPublicAcls: false
       BlockPublicPolicy: false
