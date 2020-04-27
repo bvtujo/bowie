@@ -2,7 +2,7 @@ dogPicBucket:
   Type: AWS::S3::Bucket
   DeletionPolicy: Retain
   Properties:
-    AccessControl: public
+    AccessControl: PublicRead
     BucketName: !Sub ${Project}-${Env}-${App}-dog-pic-bucket
     PublicAccessBlockConfiguration: 
       BlockPublicAcls: false
