@@ -3,7 +3,7 @@ PUBLICDogBucket:
   DeletionPolicy: Retain
   Properties:
     AccessControl: PublicRead
-    BucketName: PUBLIC-dog-pic-bucket
+    BucketName: !Sub ${Project}-${Env}-${App}-public-dog-pic-bucket
     PublicAccessBlockConfiguration:
       BlockPublicAcls: false
       BlockPublicPolicy: false
