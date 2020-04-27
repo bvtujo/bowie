@@ -1,4 +1,4 @@
-DynamoPolicy:
+AdditionalResourcesPolicy:
   Type: AWS::IAM::ManagedPolicy
   Properties:
     PolicyDocument:
@@ -18,12 +18,6 @@ DynamoPolicy:
           - 'dynamodb:Update*'
           - 'dynamodb:PutItem'
           Resource: !Sub 'arn:aws:dynamodb:*:*:Table/${Project}-${Env}-${App}-dog-table'
-S3Policy:
-  Type: AWS::IAM::ManagedPolicy
-  Properties:
-    PolicyDocument:
-      Version: 2012-10-17
-      Statement:
         - Effect: Allow
           Action:
           - 's3:Get*'
