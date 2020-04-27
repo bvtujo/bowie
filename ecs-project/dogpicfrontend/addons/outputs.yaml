@@ -1,9 +1,6 @@
 AdditionalResourcesPolicyArn:
-  Description: ARN of the policy to access additional resources from.
+  Description: "ARN of the policy to access additional resources from."
   Value: !Ref AdditionalResourcesPolicy
 MyTableName:
-  Description: The name of the DynamoDB table for this application.
-  Value: !GetAtt dogTable.Arn
-MyBucketName:
-  Description: The name of the dog picture s3 bucket
-  Value: !GetAtt dogPicBucket.Arn
+  Description: "The name of the DynamoDB table for this application."
+  Value: !GetAtt DogTable.Arn

@@ -1,6 +1,6 @@
-dogTable:
+DogTable:
   Type: AWS::DynamoDB::Table
-  Properties: 
+  Properties:
     TableName: !Sub ${Project}-${Env}-${App}-dog-table
     AttributeDefinitions: 
       - AttributeName: "dog-name"
