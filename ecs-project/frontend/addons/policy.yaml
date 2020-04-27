@@ -3,25 +3,25 @@ AdditionalResourcesPolicy:
   Properties:
     PolicyDocument:
       Version: 2012-10-17
-      Statement:
-      - Effect: Allow
-        Action:
-        - "dynamodb:BatchGet*"
-        - "dynamodb:DescribeStream"
-        - "dynamodb:DescribeTable"
-        - "dynamodb:Get*"
-        - "dynamodb:Query"
-        - "dynamodb:Scan"
-        - "dynamodb:BatchWrite*"
-        - "dynamodb:CreateTable"
-        - "dynamodb:Delete*"
-        - "dynamodb:Update*"
-        - "dynamodb:PutItem"
-        Resource: !Sub
-        - "arn:aws:dynamodb:*:*:table/${Table}"
-        - { Table: !Ref dogTable }
-      Statement:
-        - Sid: copilot-s3-object-actions
+      - Statement:
+          Effect: Allow
+          Action:
+          - "dynamodb:BatchGet*"
+          - "dynamodb:DescribeStream"
+          - "dynamodb:DescribeTable"
+          - "dynamodb:Get*"
+          - "dynamodb:Query"
+          - "dynamodb:Scan"
+          - "dynamodb:BatchWrite*"
+          - "dynamodb:CreateTable"
+          - "dynamodb:Delete*"
+          - "dynamodb:Update*"
+          - "dynamodb:PutItem"
+          Resource: !Sub
+          - "arn:aws:dynamodb:*:*:table/${Table}"
+          - { Table: !Ref dogTable }
+      - Statement:
+          Sid: copilotS3ObjectActions
           Action:
             - s3:DeleteObject
             - s3:GetObject
@@ -33,8 +33,8 @@ AdditionalResourcesPolicy:
           Resource: !Sub
           - "arn:aws:s3:::${Bucket}/*"
           - { Bucket: !Ref dogPicBucket }
-      Statement:
-        - Sid: copilot-s3-bucket-actions
+      - Statement:
+          Sid: copilottS3BucketActions
           Action:
             - s3:ListBucket
           Effect: Allow
