@@ -186,6 +186,8 @@ func Healthcheck(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 }
 
 func main() {
+
+	log.Infof("started new task")
 	r := httprouter.New()
 
 	r.GET("/", Index)
