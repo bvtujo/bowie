@@ -37,7 +37,6 @@ func (s *S3Client) Upload(file io.Reader, key string) (*s3manager.UploadOutput, 
 	if err != nil {
 		return nil, err
 	}
-	result, err := s.s3.P
 	return result, nil
 }
 
