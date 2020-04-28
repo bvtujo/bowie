@@ -47,7 +47,7 @@ func Index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	}
 
 	p := web.PageData{
-		Stylesheet: fmt.Sprintf("%s.s3.amazonaws.com/main.css", publicAssetsBucket),
+		Stylesheet: fmt.Sprintf("https://%s.s3.amazonaws.com/main.css", publicAssetsBucket),
 	}
 	d := web.IndexData{
 		PageData: p,

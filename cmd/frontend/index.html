@@ -6,18 +6,22 @@
         <title>🐶DDOS: Daily Dose of Sweet (dog pics)</title>
     </head>
     <body>
-        <h1>🐶DDOS: Daily Dose of Sweet (dog pics)</h1>
-        <div id="dogs">
-            {{range .Items}}
-            <div>
-                <img class="dog-picture" src={{.URL}}>
-                <button class="button button-memedown">Memedown</button>
+        <div>
+            <h1>🐶DDOS: Daily Dose of Sweet (dog pics)</h1>
+            <div id="dogs">
+                {{range .Items}}
+                <div class="dog-picture">
+                    <img src={{.URL}}>
+                    <div class="div-button">
+                        <button class="button button-memedown">Memedown</button>
+                    </div>
+                </div>
+                {{else}}
+                <div>
+                    <strong>no rows</strong>
+                </div>
+                {{end}}
             </div>
-            {{else}}
-            <div>
-                <strong>no rows</strong>
-            </div>
-            {{end}}
         </div>
 	</body>
 </html>
