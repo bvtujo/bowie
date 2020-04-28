@@ -13,7 +13,17 @@
                 <div class="dog-picture">
                     <img src={{.URL}}>
                     <div class="div-button">
-                        <button class="button button-memedown">Memedown</button>
+                        <table>
+                            <tr>
+                              <th rowspan=2>
+                                <button class="button button-memedown" onclick="">Memedown!</button>
+                              </th>
+                              <td>Uploaded {{.FriendlyUploadDate}}</td>
+                            </tr>
+                            <tr>
+                              <td>{{.Dog}}</td>
+                            </tr>
+                          </table>
                     </div>
                 </div>
                 {{else}}

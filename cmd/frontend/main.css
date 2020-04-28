@@ -11,7 +11,7 @@ body {
 }
 h1 {
     font-weight: bold;
-    align: center;
+    text-align: center;
 }
 img {
     border-radius: 10px;
@@ -22,6 +22,7 @@ img {
     padding: 20px;
     margin: 10px;
     border-radius: 10px;
+    align-content: center;
 }
 
 .button {

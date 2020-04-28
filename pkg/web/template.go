@@ -24,8 +24,9 @@ type IndexData struct {
 }
 
 type DogPic struct {
-	URL string
-	Dog string
+	URL                string
+	Dog                string
+	FriendlyUploadDate string
 }
 
 func executeIndex(w http.ResponseWriter, t *template.Template, d IndexData) error {

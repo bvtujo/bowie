@@ -70,9 +70,30 @@ func convertAll(in []database.DogPic) []web.DogPic {
 }
 func convert(in database.DogPic) web.DogPic {
 	return web.DogPic{
-		Dog: *in.Dog,
-		URL: *in.URL,
+		Dog:                *in.Dog,
+		URL:                *in.URL,
+		FriendlyUploadDate: friendlify(in.Timestamp),
 	}
+}
+
+func friendlify(timestamp int64) string {
+	now := time.Now()
+
+	hourDiff := now.Sub(time.Unix(timestamp, 0)).Hours()
+
+	crossesMidnight := (float64(now.Hour())-hourDiff < 0)
+
+	switch {
+	case hourDiff < 24:
+		if crossesMidnight {
+			return "yesterday"
+		} else {
+			return "today"
+		}
+	case hourDiff/24 < 7:
+		return fmt.Sprintf("%d days ago", int(hourDiff/24))
+	}
+	return fmt.Sprintf("%d weeks ago", int(hourDiff/24/7))
 }
 
 func checkHTTPErrorf(w http.ResponseWriter, code int, message string, e error) bool {
