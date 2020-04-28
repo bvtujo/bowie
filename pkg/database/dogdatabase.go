@@ -50,8 +50,9 @@ func (ds *DogService) GetAll() ([]DogPic, error) {
 		}
 		output = append(output, currentPic)
 	}
+	// reverse the list
 	sort.Slice(output, func(i, j int) bool {
-		return output[i].Timestamp < output[j].Timestamp
+		return output[i].Timestamp > output[j].Timestamp
 	})
 	return output, nil
 }
