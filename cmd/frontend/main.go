@@ -28,6 +28,7 @@ const (
 
 var publicDogPicBucket = os.Getenv("BUCKET_NAME")
 var dynamoTable = os.Getenv("MY_TABLE_NAME")
+var publicAssetsBucket = os.Getenv("ASSETS_BUCKET_NAME")
 
 // Index returns the homepage, or all dog gifs.
 func Index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
@@ -46,7 +47,7 @@ func Index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	}
 
 	p := web.PageData{
-		Stylesheet: "",
+		Stylesheet: fmt.Sprintf("%s.s3.amazonaws.com/main.css", publicAssetsBucket),
 	}
 	d := web.IndexData{
 		PageData: p,
