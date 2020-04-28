@@ -1,6 +1,7 @@
 package s3
 
 import (
+	"fmt"
 	"io"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -11,23 +12,26 @@ import (
 
 // S3Client handles s3 uploads.
 type S3Client struct {
-	s3      *s3manager.Uploader
-	bucket  *string
-	deleter *s3.S3
+	s3        *s3manager.Uploader
+	bucket    *string
+	deleter   *s3.S3
+	aclSetter *s3.S3
 }
 
 // NewS3Uploader returns an s3 uploader for the given bucket.
 func NewS3Uploader(bucket string, sess *session.Session) *S3Client {
+	s3 := s3.New(sess)
 	return &S3Client{
-		s3:      s3manager.NewUploader(sess),
-		bucket:  aws.String(bucket),
-		deleter: s3.New(sess),
+		s3:        s3manager.NewUploader(sess),
+		bucket:    aws.String(bucket),
+		deleter:   s3,
+		aclSetter: s3,
 	}
 }
 
 // Upload takes an io.Reader and a key, uploads the file at the reader to the key,
 // and returns the s3 upload output from the Uploader.
-func (s *S3Client) Upload(file io.Reader, key string) (*s3manager.UploadOutput, error) {
+func (s *S3Client) PublicUpload(file io.Reader, key string) (*s3manager.UploadOutput, error) {
 	result, err := s.s3.Upload(&s3manager.UploadInput{
 		Bucket: s.bucket,
 		Key:    aws.String(key),
@@ -37,6 +41,15 @@ func (s *S3Client) Upload(file io.Reader, key string) (*s3manager.UploadOutput, 
 	if err != nil {
 		return nil, err
 	}
+	_, err = s.aclSetter.PutObjectAcl(&s3.PutObjectAclInput{
+		Bucket: s.bucket,
+		Key:    aws.String(key),
+		ACL:    aws.String("public-read"),
+	})
+	if err != nil {
+		return nil, fmt.Errorf("set object acl: %w", err)
+	}
+
 	return result, nil
 }
 

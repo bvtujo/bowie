@@ -141,7 +141,7 @@ func AddNewDogPic(w http.ResponseWriter, r *http.Request, ps httprouter.Params) 
 	}
 	s3client := s3.NewS3Uploader(publicDogPicBucket, sess)
 	s3Key := fmt.Sprintf("%s/%d.gif", ps.ByName("dogName"), time.Now().Unix())
-	res, err := s3client.Upload(file, s3Key)
+	res, err := s3client.PublicUpload(file, s3Key)
 	if err != nil {
 		log.Warnf("error upload file to s3: %w", err)
 		http.Error(w, "can't upload file to s3", http.StatusInternalServerError)
