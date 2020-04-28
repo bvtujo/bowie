@@ -1,0 +1,46 @@
+body {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: aquamarine;
+    background-image: linear-gradient(to bottom right, aquamarine, cornsilk);
+}
+h1 {
+    font-weight: bold;
+    align: center;
+}
+img {
+    border-radius: 10px;
+}
+
+.dog-picture {
+    border: 3px solid black;
+    padding: 20px;
+    margin: 10px;
+    border-radius: 10px;
+}
+
+.button {
+    border: none;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.button-memedown {
+    background-color: #2B2D42;
+    color: #F56FA1;
+}
+
+.div-button {
+  align-content: center;
+}
