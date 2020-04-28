@@ -32,7 +32,7 @@ func executeIndex(w http.ResponseWriter, t *template.Template, d IndexData) erro
 
 	err := t.Execute(w, d)
 	if err != nil {
-		return fmt.Errorf("execute index template: %w", err)
+		return fmt.Errorf("execute index template: %s", err.Error())
 	}
 	return nil
 }

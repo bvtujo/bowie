@@ -32,10 +32,12 @@ func (s *S3Client) Upload(file io.Reader, key string) (*s3manager.UploadOutput, 
 		Bucket: s.bucket,
 		Key:    aws.String(key),
 		Body:   file,
+		ACL:    aws.String("public-read"),
 	})
 	if err != nil {
 		return nil, err
 	}
+	result, err := s.s3.P
 	return result, nil
 }
 

@@ -54,6 +54,7 @@ func Index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	}
 	err = t.Execute(w, d)
 	if checkHTTPErrorf(w, http.StatusInternalServerError, "execute index: %w", err) {
+		log.Infof("error execute index: %s", err.Error())
 		return
 	}
 	return
