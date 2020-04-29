@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"regexp"
 	"strings"
 	"time"
 
@@ -29,6 +30,8 @@ const (
 var publicDogPicBucket = os.Getenv("BUCKET_NAME")
 var dynamoTable = os.Getenv("MY_TABLE_NAME")
 var publicAssetsBucket = os.Getenv("ASSETS_BUCKET_NAME")
+
+var mimeImageTypeRegex = regexp.MustCompile("image/.*")
 
 // Index returns the homepage, or all dog gifs.
 func Index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
@@ -118,7 +121,7 @@ func AddPage(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	}
 
 	p := web.PageData{
-		Stylesheet: "",
+		Stylesheet: fmt.Sprintf("https://%s.s3.amazonaws.com/main.css", publicAssetsBucket),
 	}
 	d := web.AddData{
 		PageData: p,
@@ -147,14 +150,13 @@ func AddNewDogPic(w http.ResponseWriter, r *http.Request, ps httprouter.Params) 
 		return
 	}
 	defer file.Close()
+	if !(mimeImageTypeRegex.MatchString(handler.Header["Content-Type"][0])) {
+		log.Infof("file %s is not an image", handler.Filename)
+		http.Redirect(w, r, fmt.Sprintf("/add/%s", ps.ByName("dogName")), http.StatusSeeOther)
+	}
 	log.Infof("Uploaded File: %+v\n", handler.Filename)
 	log.Infof("File Size: %+v\n", handler.Size)
 	log.Infof("MIME Header: %+v\n", handler.Header)
-
-	if !(strings.HasSuffix(handler.Filename, ".gif")) {
-		log.Infof("file %s is not gif", handler.Filename)
-		http.Redirect(w, r, fmt.Sprintf("/add/%s", ps.ByName("dogName")), http.StatusSeeOther)
-	}
 
 	sess, err := session.NewSession()
 	if err != nil {
