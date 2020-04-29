@@ -18,6 +18,8 @@ h1 {
 }
 img {
     border-radius: 10px;
+    max-width: 500px;
+
 }
 
 .dog-picture {
@@ -26,7 +28,6 @@ img {
     margin: 10px;
     border-radius: 10px;
     align-content: center;
-    max-width: 500px;
 }
 
 .button {
