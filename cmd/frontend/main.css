@@ -19,7 +19,7 @@ h1 {
 img {
     border-radius: 10px;
     max-width: 500px;
-
+    max-height: 500px;
 }
 
 .dog-picture {
