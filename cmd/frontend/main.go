@@ -243,7 +243,7 @@ func main() {
 	log.Infof("started new task")
 	r := httprouter.New()
 
-	r.GET("/sweet", Index)
+	r.GET("/", Index)
 	r.GET("/sweet/:dogName/add", AddPage)
 	r.POST("/sweet/:dogName/add", AddNewDogPic)
 	r.GET("/sweet/:dogName", ShowDog)
