@@ -153,7 +153,7 @@ func AddNewDogPic(w http.ResponseWriter, r *http.Request, ps httprouter.Params) 
 	defer file.Close()
 	if !(mimeImageTypeRegex.MatchString(handler.Header["Content-Type"][0])) {
 		log.Infof("file %s is not an image", handler.Filename)
-		http.Redirect(w, r, fmt.Sprintf("/add/%s", ps.ByName("dogName")), http.StatusSeeOther)
+		http.Redirect(w, r, fmt.Sprintf("/sweet/%s/add", ps.ByName("dogName")), http.StatusSeeOther)
 	}
 	log.Infof("Uploaded File: %+v\n", handler.Filename)
 	log.Infof("File Size: %+v\n", handler.Size)
@@ -244,9 +244,9 @@ func main() {
 	r := httprouter.New()
 
 	r.GET("/", Index)
-	r.GET("/add/:dogName", AddPage)
-	r.POST("/add/:dogName", AddNewDogPic)
-	r.GET("/dogs/:dogName", ShowDog)
+	r.GET("/sweet/:dogName/add", AddPage)
+	r.POST("/sweet/:dogName/add", AddNewDogPic)
+	r.GET("/sweet/:dogName", ShowDog)
 
 	r.GET("/healthcheck", Healthcheck)
 
