@@ -1,6 +1,7 @@
 package database
 
 import (
+	"sort"
 	"strconv"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -43,6 +44,9 @@ func (ds *DogService) GetAll() ([]DogPic, error) {
 		}
 		output = append(output, currentPic)
 	}
+	sort.Slice(output, func(i, j int) bool {
+		return (output[i].Timestamp < output[j].Timestamp)
+	})
 	output = reverseSlice(output)
 	return output, nil
 }
