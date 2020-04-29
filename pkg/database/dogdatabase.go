@@ -89,8 +89,9 @@ func (ds *DogService) Add(dog DogPic) (*dynamodb.PutItemOutput, error) {
 
 func (ds *DogService) GetDog(dog string) ([]DogPic, error) {
 	queryout, err := ds.dynamo.Query(&dynamodb.QueryInput{
-		TableName:              ds.table,
-		KeyConditionExpression: aws.String("dog-name = :dogname"),
+		TableName:                ds.table,
+		ExpressionAttributeNames: map[string]*string{"#pk": aws.String("dog-name")},
+		KeyConditionExpression:   aws.String("#pk = :dogname"),
 		ExpressionAttributeValues: map[string]*dynamodb.AttributeValue{
 			":dogname": &dynamodb.AttributeValue{S: aws.String(dog)},
 		},
