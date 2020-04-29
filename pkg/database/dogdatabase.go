@@ -1,7 +1,6 @@
 package database
 
 import (
-	"sort"
 	"strconv"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -38,27 +37,31 @@ func (ds *DogService) GetAll() ([]DogPic, error) {
 	}
 	var output []DogPic
 	for _, r := range scanOut.Items {
-		timestamp, err := strconv.ParseInt(*r["timestamp"].N, 10, 64)
+		currentPic, err := newDogPic(r)
 		if err != nil {
 			return nil, err
 		}
-		currentPic := DogPic{
-			Dog:       r["dog-name"].S,
-			Key:       r["key"].S,
-			Timestamp: timestamp,
-			URL:       r["url"].S,
-		}
 		output = append(output, currentPic)
 	}
-	// reverse the list
-	sort.Slice(output, func(i, j int) bool {
-		return output[i].Timestamp > output[j].Timestamp
-	})
+	output = reverseSlice(output)
 	return output, nil
 }
 
-func (ds *DogService) Add(dog DogPic) (*dynamodb.PutItemOutput, error) {
+func newDogPic(i map[string]*dynamodb.AttributeValue) (DogPic, error) {
+	timestamp, err := strconv.ParseInt(*i["timestamp"].N, 10, 64)
+	if err != nil {
+		return DogPic{}, err
+	}
+	pic := DogPic{
+		Dog:       i["dog-name"].S,
+		Key:       i["key"].S,
+		Timestamp: timestamp,
+		URL:       i["url"].S,
+	}
+	return pic, nil
+}
 
+func (ds *DogService) Add(dog DogPic) (*dynamodb.PutItemOutput, error) {
 	res, err := ds.dynamo.PutItem(
 		&dynamodb.PutItemInput{
 			TableName: ds.table,
@@ -82,4 +85,35 @@ func (ds *DogService) Add(dog DogPic) (*dynamodb.PutItemOutput, error) {
 		return nil, err
 	}
 	return res, nil
+}
+
+func (ds *DogService) GetDog(dog string) ([]DogPic, error) {
+	queryout, err := ds.dynamo.Query(&dynamodb.QueryInput{
+		TableName:              ds.table,
+		KeyConditionExpression: aws.String("dog-name = :dogname"),
+		ExpressionAttributeValues: map[string]*dynamodb.AttributeValue{
+			":dogname": &dynamodb.AttributeValue{S: aws.String(dog)},
+		},
+	})
+	if err != nil {
+		return nil, err
+	}
+	var output []DogPic
+	for _, i := range queryout.Items {
+		currentPic, err := newDogPic(i)
+		if err != nil {
+			return nil, err
+		}
+		output = append(output, currentPic)
+	}
+	output = reverseSlice(output)
+	return output, nil
+}
+
+func reverseSlice(s []DogPic) []DogPic {
+	for i := len(s)/2 - 1; i >= 0; i-- {
+		opp := len(s) - 1 - i
+		s[i], s[opp] = s[opp], s[i]
+	}
+	return s
 }

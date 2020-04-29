@@ -6,14 +6,16 @@
         <title>🐶DDOS: Daily Dose of Sweet (dog pics)</title>
     </head>
     <body>
-        <h1>Add a picture of {{.DogName}}</h1>
-        <div id="form">
-            <form action="/add/{{.DogName}}" method="post" 
-             enctype="multipart/form-data">
-                <label for="myFile">Select a file:</label>
-                <input type="file" id="myFile" name="myFile">
-                <input type="submit" value="Submit">
-			</form>
+        <div>
+            <h1>Add a picture of {{.DogName}}</h1>
+            <div id="form">
+                <form action="/add/{{.DogName}}" method="post" 
+                enctype="multipart/form-data">
+                    <label for="myFile">Select a file:</label>
+                    <input type="file" id="myFile" name="myFile">
+                    <input type="submit" value="Submit">
+                </form>
+            </div>
         </div>
 	</body>
 </html>

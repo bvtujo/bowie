@@ -53,8 +53,9 @@ func Index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		Stylesheet: fmt.Sprintf("https://%s.s3.amazonaws.com/main.css", publicAssetsBucket),
 	}
 	d := web.IndexData{
-		PageData: p,
-		Items:    convertAll(allPics),
+		PageData:    p,
+		Items:       convertAll(allPics),
+		TitleFlavor: "dog pics",
 	}
 	err = t.Execute(w, d)
 	if checkHTTPErrorf(w, http.StatusInternalServerError, "execute index: %w", err) {
@@ -197,7 +198,34 @@ func AddNewDogPic(w http.ResponseWriter, r *http.Request, ps httprouter.Params) 
 }
 
 func ShowDog(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	fmt.Fprintf(w, "showing %s", ps.ByName("dogName"))
+	t, err := web.LoadTemplate("cmd/frontend/index.html")
+	if checkHTTPErrorf(w, http.StatusInternalServerError, "cannot read template: %w", err) {
+		return
+	}
+	sess, err := session.NewSession()
+	if checkHTTPErrorf(w, http.StatusInternalServerError, "cannot get dynamo connection: %w", err) {
+		return
+	}
+	ddb := database.NewDogService(sess, dynamoTable)
+	dogPics, err := ddb.GetDog(ps.ByName("dogName"))
+	if checkHTTPErrorf(w, http.StatusInternalServerError, "cannot scan ddb: %w", err) {
+		return
+	}
+
+	p := web.PageData{
+		Stylesheet: fmt.Sprintf("https://%s.s3.amazonaws.com/main.css", publicAssetsBucket),
+	}
+	d := web.IndexData{
+		PageData:    p,
+		Items:       convertAll(dogPics),
+		TitleFlavor: ps.ByName("dogName"),
+	}
+	err = t.Execute(w, d)
+	if checkHTTPErrorf(w, http.StatusInternalServerError, "execute index: %w", err) {
+		log.Infof("error execute index: %s", err.Error())
+		return
+	}
+	return
 }
 
 func getTimestamp() int64 {

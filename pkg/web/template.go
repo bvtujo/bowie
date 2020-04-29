@@ -20,7 +20,8 @@ type PageData struct {
 
 type IndexData struct {
 	PageData
-	Items []DogPic
+	Items       []DogPic
+	TitleFlavor string
 }
 
 type DogPic struct {

@@ -1,3 +1,6 @@
+/*
+https://coolors.co/fff8dc-7fffd4-2b2d42-f56fa1-f7e733
+*/
 body {
     display: -webkit-flex;
     display: flex;
@@ -40,8 +43,9 @@ img {
 .button-memedown {
     background-color: #2B2D42;
     color: #F56FA1;
+    align-self: center;
 }
 
 .div-button {
-  align-content: center;
+  align-items: center;
 }
