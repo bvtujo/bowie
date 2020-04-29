@@ -26,6 +26,7 @@ img {
     margin: 10px;
     border-radius: 10px;
     align-content: center;
+    max-width: 500px;
 }
 
 .button {
