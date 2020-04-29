@@ -193,7 +193,7 @@ func AddNewDogPic(w http.ResponseWriter, r *http.Request, ps httprouter.Params) 
 		log.Infof("deleted object from s3: %v", deleteOut)
 		return
 	}
-	rdURL := fmt.Sprintf("/dogs/%s", ps.ByName("dogName"))
+	rdURL := fmt.Sprintf("/sweet/%s", ps.ByName("dogName"))
 	http.Redirect(w, r, rdURL, http.StatusSeeOther)
 }
 
@@ -243,7 +243,7 @@ func main() {
 	log.Infof("started new task")
 	r := httprouter.New()
 
-	r.GET("/", Index)
+	r.GET("/sweet", Index)
 	r.GET("/sweet/:dogName/add", AddPage)
 	r.POST("/sweet/:dogName/add", AddNewDogPic)
 	r.GET("/sweet/:dogName", ShowDog)
