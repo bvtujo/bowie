@@ -1,0 +1,10 @@
+FROM golang:1.13
+
+WORKDIR /webhook
+COPY . .
+
+RUN go build cmd/webhook/main.go
+ENTRYPOINT go run cmd/webhook/main.go
+
+EXPOSE 80
+
