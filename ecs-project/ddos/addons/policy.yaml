@@ -7,24 +7,4 @@ AdditionalResourcesPolicy:
         - Effect: Allow
           Action:
           - 'dynamodb:BatchGet*'
-          - 'dynamodb:DescribeStream'
-          - 'dynamodb:DescribeTable'
-          - 'dynamodb:Get*'
-          - 'dynamodb:Query'
-          - 'dynamodb:Scan'
-          - 'dynamodb:BatchWrite*'
-          - 'dynamodb:CreateTable'
-          - 'dynamodb:Delete*'
-          - 'dynamodb:Update*'
-          - 'dynamodb:PutItem'
           Resource: !Sub 'arn:aws:dynamodb:*:*:Table/${Project}-${Env}-${App}-dog-table'
-        - Effect: Allow
-          Action:
-          - 's3:Get*'
-          - 's3:Put*'
-          - 's3:DeleteObject'
-          - 's3:RestoreObject'
-          Resource: 'arn:aws:s3:::PUBLIC-dog-pic-bucket/*'
-        - Effect: Allow
-          Action: 's3:ListBucket'
-          Resource: 'arn:aws:s3:::PUBLIC-dog-pic-bucket'
